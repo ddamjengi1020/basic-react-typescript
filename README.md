@@ -1,44 +1,93 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# **React with Typescript**
 
-## Available Scripts
 
-In the project directory, you can run:
+## **Started**
+terminal command
+<br>
 
-### `yarn start`
+```
+npx create-react-app <myProject> --template typescript
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+= Success message =
+cd <myProject>
+yarn start
+```
+<br>
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## **Feature**
 
-### `yarn test`
+Let's see difference between class and functional with counter component
+<br>
+<br>
+> Class-Components pattern
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+import React, { Component } from 'react';
 
-### `yarn build`
+// Component 에는 props, state의 타입을 지정해줄수 있음
+interface IState {
+  counter: number
+}
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+class App extends Component<{}, IState> { // props가 없을 시 {}-(문서참고)
+  state={
+    counter:0
+  }
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+  render(){
+    const {counter} = this.state;
+    return (
+      <>
+        <div>{counter}</div>
+        <button onClick={this.add}>add</button>
+        <button onClick={this.remove}>remove</button>
+      </>
+    );
+  }
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+  add = () => {
+    this.setState(prev=>{
+      return{
+        counter: prev.counter + 1
+      }
+    })
+  }
+  remove =() => {
+    this.setState(prev=>{
+      return{
+        counter: prev.counter - 1
+      }
+    })
+  }
+}
+```
 
-### `yarn eject`
+> Functional Components pattern
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```
+import React, { useState } from "react";
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+interface ICount {
+    count: number
+}
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+const App = () => {
+    // useState Hooks 타입은 initialState를 제네릭으로 표시해주면 됨 
+    const [counter, setCounter] = useState<ICount>({count:0});
+    const add = ():void => {
+        setCounter({count: counter.count + 1})
+    }
+    const remove = ():void => {
+        setCounter({count: counter.count - 1})
+    }
+    return (
+        <>
+            <div>{counter.count}</div>
+            <button onClick={add}>add</button>
+            <button onClick={remove}>remove</button>
+        </>
+    )
+}
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+export default App;
+```
