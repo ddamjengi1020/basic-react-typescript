@@ -3,7 +3,7 @@
 
 ## **Started**
 terminal command
-<br>
+<br/>
 
 ```
 npx create-react-app <myProject> --template typescript
@@ -12,7 +12,7 @@ npx create-react-app <myProject> --template typescript
 cd <myProject>
 yarn start
 ```
-<br>
+<br/>
 
 ## **Feature**
 
@@ -22,18 +22,19 @@ yarn start
     + Props
     + Events
     + Styled-components
-<br>
-<br>
+    + Styled-components + **Theme**
+<br/>
+<br/>
 
 **Compare to class and functional**
 
 _Let's see difference between class and functional with counter component_
 
-<br>
+<br/>
 
 > Class-Components pattern
 
-```
+```js
 import React, { Component } from 'react';
 
 interface IState {
@@ -75,7 +76,7 @@ class App extends Component<{}, IState> {
 
 > Functional Components pattern
 
-```
+```js
 import React, { useState } from "react";
 
 interface ICount {
@@ -99,12 +100,18 @@ const App = () => {
     )
 }
 ```
+<br/>
+
+***
+<br/>
 
 **With Typescript**
 
+<br/>
+
 > State
 
-```
+```js
 (alias) class Component<P(props) = {}, S(state) = {}, SS = any>
 import Component
 
@@ -120,7 +127,7 @@ class App extends Component<{}, IState> {
 
 > Props
 
-```
+```js
 /src/App.tsx
 
   import Counter from './components/Counter';
@@ -157,7 +164,7 @@ class App extends Component<{}, IState> {
 
 > Events
 
-```
+```js
 /src/components/Input.tsx
 
 interface IInputProps {
@@ -212,6 +219,69 @@ class App extends Component<{}, IState> {
 
 > styled-components
 
+```js
+const CountContainer = styled.div<{isBlue:boolean}>`
+    color: ${props=> props.isBlue? "blue": "black"};
+    font-size: 30px;
+    font-weight: 700;
+`;
+
+interface ICounterProps {
+    counter: number
+}
+
+const Counter:React.FunctionComponent<ICounterProps> = ({counter}) => {
+    return (
+        <CountContainer isBlue={counter> 10}>{counter}</CountContainer>
+    )
+}
 ```
 
+> styled-components **Theme**
+
+```js
+/src/theme.ts
+
+export default {
+    redColor: "red",
+    greenColor: "green"
+}
+
+/src/index.tsx
+
+import theme from "./theme";
+
+import { ThemeProvider } from 'styled-components';
+
+ReactDOM.render(
+<ThemeProvider theme={theme}>// App 컴포넌트에 theme을 뿌려줌
+    <App />
+</ThemeProvider>, document.getElementById('root'));
 ```
+- Usage theme 
+
+```js
+  color: ${props=> props.isBlue? props.theme.redColor : props.theme.greenColor}
+```
+
+- Autocomplete  
+  - custom한 theme을 자동완성되게 하려면 styled.d.ts\
+  파일을 만들어 **DefaultTheme**에 명시해줘야함\
+[https://styled-components.com/docs/api#create-a-declarations-file](https://styled-components.com/docs/api#create-a-declarations-file)\
+(API Reference - Typescript section)
+
+```js
+/src/styled.d.ts
+
+import 'styled-components'
+
+declare module 'styled-components' {
+  export interface DefaultTheme {
+    redColor:string,
+    greenColor:string
+  }
+}
+```
+<br/>
+
+### Let's do it your project with **Typescript**!
