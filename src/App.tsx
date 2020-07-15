@@ -1,25 +1,40 @@
 import React, { Component } from 'react';
-import SecondApp from "./_App";
+import Counter from './components/Counter';
+import { Input, Form } from './components/Input';
 
 interface IState {
-  counter: number
+  counter: number,
+  text: string
 }
 
 class App extends Component<{}, IState> {
   state={
-    counter:0
+    counter:0,
+    text: ""
   }
 
   render(){
-    const {counter} = this.state;
+    const {counter, text} = this.state;
     return (
       <>
-        <div>{counter}</div>
+        <Counter counter={counter}/>
         <button onClick={this.add}>add</button>
         <button onClick={this.remove}>remove</button>
-        <SecondApp />
+        <Form onSubmit={this.onSubmit}>
+          <Input value={text} onChange={this.onChange} />
+        </Form>
       </>
     );
+  }
+
+  onChange = (event:React.ChangeEvent<HTMLInputElement>) => {
+    const text:string = event.target.value
+    this.setState({text})
+  }
+
+  onSubmit = (event:React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    this.setState({text:""})
   }
 
   add = () => {
